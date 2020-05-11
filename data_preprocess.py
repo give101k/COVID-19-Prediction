@@ -23,6 +23,7 @@ total_recovered = []
 new_cases_per_day = []
 deaths_per_day = []
 recovered_per_day = []
+active_cases = []
 
 # loops trough all the files in the directory pulling out the data needed.
 for file in files:
@@ -44,8 +45,9 @@ for file in files:
         recovered_per_day.append(
             new_data['Recovered'].sum() - total_recovered[-2])
     dates.append(file[:10])
+    active_cases.append(total_cases[-1] - (total_deaths[-1] + total_recovered[-1]))
 
-df_all = pd.DataFrame(list(zip(dates, new_cases_per_day, deaths_per_day, recovered_per_day, total_cases, total_deaths, total_recovered)), columns=[
-                      'Dates', 'New Cases Per Day', 'Deaths Per Day', 'Recovered Per Day', 'Total Cases', 'Total Deaths', 'Total Recovered'])
+df_all = pd.DataFrame(list(zip(dates, new_cases_per_day, deaths_per_day, recovered_per_day, total_cases, total_deaths, total_recovered, active_cases)), columns=[
+                      'Dates', 'New Cases Per Day', 'Deaths Per Day', 'Recovered Per Day', 'Total Cases', 'Total Deaths', 'Total Recovered', 'Active Cases'])
 
 df_all.to_csv('./data/' + dates[-1] + '.csv', index=False, header=True)
